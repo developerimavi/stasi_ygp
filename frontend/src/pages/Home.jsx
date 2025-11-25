@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Clock, FileText, Users, Heart } from 'lucide-react';
-import { pengumumanAPI, profileAPI, artikelAPI, formulirAPI, liturgicalCalendarAPI } from '../services/api';
+import { pengumumanAPI, profileAPI, artikelAPI, liturgicalCalendarAPI } from '../services/api';
 import HeroSlider from '../components/HeroSlider';
 import './Home.css';
 
@@ -11,7 +11,6 @@ const Home = () => {
   const [profile, setProfile] = useState(null);
   const [massSchedule, setMassSchedule] = useState([]);
   const [socialMedia, setSocialMedia] = useState({});
-  const [formulirs, setFormulirs] = useState([]);
   const [liturgicalData, setLiturgicalData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [articlesLoading, setArticlesLoading] = useState(true);
@@ -48,14 +47,6 @@ const Home = () => {
         });
         setArticles(artikelData.data || []);
         setArticlesLoading(false);
-
-        // Fetch formulir aktif dengan status published (4 items untuk bookmark)
-        const formulirData = await formulirAPI.getAll({
-          isActive: true,
-          status: 'published',
-          limit: 4
-        });
-        setFormulirs(formulirData.data || []);
 
         // Fetch profile data (untuk social media dan jadwal misa)
         const profileData = await profileAPI.get();
@@ -298,33 +289,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Formulir Section */}
-      <section className="forms-booth section">
-        <div className="container">
-          <h2 className="section-title">Formulir</h2>
-          <div className="forms-grid">
-            {formulirs.length > 0 ? (
-              formulirs.map((formulir) => (
-                <div key={formulir.id} className="form-card">
-                  <h3>{formulir.bookmark || formulir.name}</h3>
-                  <p>{formulir.description}</p>
-                  <a
-                    href={formulir.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-primary"
-                    download
-                  >
-                    Download Formulir
-                  </a>
-                </div>
-              ))
-            ) : (
-              <p style={{textAlign: 'center', gridColumn: '1/-1'}}>Formulir belum tersedia</p>
-            )}
-          </div>
-        </div>
-      </section>
     </div>
   );
 };

@@ -78,7 +78,7 @@ const Formulir = () => {
   // Handle download
   const handleDownload = async (formulir) => {
     try {
-      const fileUrl = getImageUrl(formulir.fileUrl);
+      const fileUrl = getImageUrl(formulir.document);
 
       // Fetch the file
       const response = await fetch(fileUrl);
